@@ -31,8 +31,44 @@ object Recursion extends App {
     factorialHelper(n, 1)
   }
 
-  println(goodFactorial(155))
+  // println(goodFactorial(155))
 
   // If we want our compiler to check if our function is truly tail recursive we can put
   // a @tailrec annotation above the function and the compiler will tell us.
+
+  @tailrec
+  def concatString(str: String, n: Int, accumulator: String): String = {
+    if (n <= 0) accumulator
+    else concatString(str, n - 1, str + accumulator)
+  }
+
+  println(concatString("hello ", 5, ""))
+
+
+  def isPrime(n: Int): Boolean = {
+    @tailrec
+    def helper(divider: Int, acc: Boolean): Boolean = {
+      if (!acc) false
+      else if (divider <= 1) true
+      else helper((divider - 1), (n % divider != 0) && acc)
+    }
+
+    helper(n / 2, true)
+  }
+
+  println(isPrime(11))
+
+
+  def fibonacci(n: Int): Int = {
+    @tailrec
+    def fibHelper(index: Int, last: Int, nextToLast: Int): Int = {
+      if (index >= n) last
+      else fibHelper(index + 1, nextToLast + last, last)
+    }
+
+    if (n <= 2) 1
+    else fibHelper(2, 1, 1)
+  }
+
+  println(fibonacci(9))
 }
